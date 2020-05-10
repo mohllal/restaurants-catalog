@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- Page Content -->
+    <div class="container padding-container">
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Restaurants
+                    <small>Choose what you want!</small>
+                    {%if 'username' in session %}
+                        <div class="pull-right">
+                            <a class="btn btn-md btn-primary" href="{{ url_for('newRestaurant') }}">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Restaurant
+                            </a>
+                        </div>
+                    {% endif %}
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        {% for restaurant_row in restaurants | batch(3, '&nbsp;')%}
+            <!-- Restaurant Row -->
+            <div class="row text-center">
+                {% for restaurant in restaurant_row %}
+                    {% if restaurant != '&nbsp;' %}
+                        <div class="col-md-3 restaurant-box">
+                            <div class="details-box">
+                                <a href="{{ url_for('showMenu', restaurant_id=restaurant.id) }}">
+                                    {% if not restaurant.image %}
+                                        <img class="img-responsive" src="http://placehold.it/700x400">
+                                    {% else %}
+                                        <img class="img-responsive" src="{{ url_for('uploaded_file', filename=restaurant.image) }}">
+                                    {% endif %}
+                                </a>
+                                <h3>
+                                    <a href="{{ url_for('showMenu', restaurant_id=restaurant.id) }}">{{ restaurant.name | safe}}</a>
+                                </h3>
+                                <p>
+                                    {{ restaurant.description | safe}}
+                                    <br>
+                                    <strong>Telephone:</strong> {{ restaurant.telephone | safe}}
+                                </p>
+                            </div>
+                            {% if 'username' in session %}
+                                <div class="text-center">
+                                    <a class="btn btn-md btn-primary action-btn" href="{{ url_for('editRestaurant', restaurant_id=restaurant.id) }}">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> &nbsp;&nbsp;Edit&nbsp;&nbsp;
+                                    </a>
+                                    <a class="btn btn-md btn-primary action-btn" href="{{ url_for('deleteRestaurant', restaurant_id=restaurant.id) }}">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <!-- /.row -->
+        {% endfor %}
+        <hr>
+    </div>
+    <!-- /.container -->
+{% endblock %}

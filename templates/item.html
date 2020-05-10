@@ -1,0 +1,104 @@
+
+{% extends "base.html" %}
+{% block content %}
+    <!-- Page Content -->
+    <div class="container padding-container">
+        <div class="row">
+            <div class=" col-md-offset-2 col-md-9">
+                <div class="thumbnail">
+                    {% if not item.image %}
+                        <img class="img-responsive" src="http://placehold.it/800x300">
+                    {% else %}
+                        <img class="img-responsive" src="{{ url_for('uploaded_file', filename=item.image) }}">
+                    {% endif %}
+                    <div class="caption-full">
+                        <h4 class="pull-right"><strong>Price: </strong>{{ item.price | safe }}</h4>
+                        <h3>{{ item.name | safe }}</h3>
+                        <h5><strong>Category: </strong>{{ item.category | safe }}</h5>
+                        <p><strong>Description: </strong>{{ item.description | safe }}</p>
+                        <p><strong>Creator: </strong><i>{{ creator.name | safe }}</i></p>
+                    </div>
+                    <div class="ratings">
+                        <p class="pull-right">{{ item.reviews }} reviews</p>
+                        <p>
+                            {% for i in range((item.rate | int)) %}
+                                <span class="glyphicon glyphicon-star"></span>
+                            {% endfor %}
+                            {% for i in range(5 - (item.rate | int)) %}
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                            {% endfor %}
+                            {{ item.rate }}.0 stars
+                        </p>
+                    </div>
+                </div>
+
+                <div class="well">
+                    <div class="text-right">
+                        {% if 'username' in session %}
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Leave a Review
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade text-left" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog"  role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Submit Review</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <form class="padding-form" role="form" method="post" action="{{ url_for('submitReview',
+                                        restaurant_id=item.restaurant_id, menu_id=item.id) }}">
+                                                    <div class="form-group">
+                                                        <label for="content">Comment</label>
+                                                        <input type="text" class="form-control" id="content" name="content" placeholder="Comment"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="rate">Rate</label>
+                                                        <select class="form-control" id="rate" name="rate">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    {% for review in reviews %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% for i in range((review.rate | int)) %}
+                                    <span class="glyphicon glyphicon-star"></span>
+                                {% endfor %}
+                                {% for i in range(5 - (review.rate | int)) %}
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                {% endfor %}
+                                <i>{{ review.user.name | safe }}</i>
+                                <span class="pull-right">{{ review.created_date.strftime("%b %d, %Y") }}</span>
+                                <p>{{ review.content | safe }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

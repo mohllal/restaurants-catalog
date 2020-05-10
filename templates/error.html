@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container" onload="redirectFunc()">
+        <div class="row">
+            <div class="col-xs-offset-3 col-xs-6">
+                <h5 class="text-center">
+                    {{ message }}
+                </h5>
+            </div>
+        </div>
+    </div>
+    <script>
+        setTimeout(function redirectFunc() {
+            window.location.href = "/";
+        }, 3000);
+    </script>
+{% endblock %}

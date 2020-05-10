@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Are you sure you want to delete {{ menuItem.name | safe }} ?</h1>
+                <form method="post" action="{{ url_for('deleteMenuItem', restaurant_id=restaurant_id, menu_id=menuItem.id) }}">
+                    <button type="submit" class="btn btn-md btn-primary action-btn" style="margin: 10px;">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                    </button>
+                    <a class="btn btn-md btn-primary action-btn" style="margin: 10px;" href="{{ url_for('showMenu', restaurant_id=restaurant_id) }}">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>  Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr>
+{% endblock %}

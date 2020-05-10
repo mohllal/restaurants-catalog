@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container padding-container">
+        <div class="row">
+            <div class="col-xs-offset-3 col-xs-6">
+                <h3 class="text-center" style="margin-bottom: 50px;">Log in via Google</h3>
+                <div class="text-center" id="googleSignInDiv">
+                    <span class="g-signin" data-scope="openid email"
+                          data-clientid="351252966012-ve1tf5ia4lngg98ojs702fqcsup5r032.apps.googleusercontent.com"
+                          data-redirecturi="postmessage"
+                          data-accesstype="offline"
+                          data-cookiepolicy="single_host_origin"
+                          data-callback="signInCallback"
+                          data-approvalprompt="force">
+                    </span>
+                </div>
+                <div id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function signInCallback(authResult) {
+            if (authResult['code']) {
+                // Hide the sign-in button now that the user is authorized
+                $('#googleSignInDiv').attr('style', 'display: none');
+                // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+                $.ajax({
+                    type: 'POST',
+                    url: '/gconnect?state={{STATE}}',
+                    processData: false,
+                    data: authResult['code'],
+                    contentType: 'application/octet-stream; charset=utf-8',
+                    success: function(result) {
+                        // Handle or verify the server response if necessary.
+                        if (result) {
+                            $('#result').html('Login Successful!</br>Redirecting...')
+                            setTimeout(function() {
+                                window.location.href = "/";
+                            }, 3000);
+
+                        } else if (authResult['error']) {
+                            console.log('There was an error: ' + authResult['error']);
+                        } else {
+                            console.log('Welcome! Fetching your information.... ');
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{
+    "name": "Restaurants Catalog",
+    "description": "Website for multiple restaurants and their menus.",
+    "main": "index.html",
+    "keywords": [
+        "Restaurant"
+    ],
+    "authors": [
+        "Kareem Khaled"
+    ],
+    "license": "MIT",
+    "homepage": "http://localhost:5000",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "bootstrap": "^3.3.7",
+        "font-awesome": "^4.6.3"
+    }
+}

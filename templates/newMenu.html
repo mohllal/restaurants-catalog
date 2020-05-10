@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container  padding-container">
+        <form method="post" action="{{ url_for('newMenuItem', restaurant_id=restaurant_id) }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="text" class="form-control" id="price" name="price" placeholder="Price" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category">
+                    <option value="Appetizer">Appetizer</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Entree">Entree</option>
+                    <option value="Beverage">Beverage</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" rows="3" id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="image">File input</label>
+                <input type="file" id="image" name="image">
+                <p class="help-block">Upload image</p>
+            </div>
+            <button type="submit" class="btn btn-md btn-primary">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+            </button>
+            <a class="btn btn-md btn-primary" href="{{ url_for('showMenu', restaurant_id=restaurant_id) }}">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+            </a>
+        </form>
+    </div>
+    <hr>
+{% endblock %}
